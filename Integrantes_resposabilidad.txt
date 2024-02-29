@@ -4,7 +4,7 @@ Commit 1:
 Commit 2:
   - Subir archivo de gestion de proyecto
 Commit 3:
-  - 
+  - Estar al pendiente de las actualizaciones de front y back para entender la manera en la que se trabaja.
 
 Josue Jose Jurado Cano - Front:
 Commit 1:
