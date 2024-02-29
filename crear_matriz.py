@@ -1,5 +1,5 @@
-#Crea una matriz aleatoria
 import numpy as np
+import tkinter as tk
 
 # Dimensiones de la matriz
 filas = 6
@@ -23,5 +23,16 @@ while matriz[fila_aleatoria, columna_aleatoria] == 1:
 # Colocar el número 2 en la posición aleatoria
 matriz[fila_aleatoria, columna_aleatoria] = 2
 
-print("Matriz:")
-print(matriz)
+# Crear ventana
+ventana = tk.Tk()
+ventana.title("Matriz Aleatoria")
+
+# Crear etiquetas para mostrar la matriz
+etiquetas = [[tk.Label(ventana, text=str(matriz[fila][columna])) for columna in range(columnas)] for fila in range(filas)]
+
+# Colocar las etiquetas en la ventana
+for fila in range(filas):
+    for columna in range(columnas):
+        etiquetas[fila][columna].grid(row=fila, column=columna, padx=5, pady=5)
+
+ventana.mainloop()
