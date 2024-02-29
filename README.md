@@ -6,7 +6,7 @@ Commit 1:
 Commit 2:
   - Subir archivo de gestion de proyecto
 Commit 3:
-  - 
+  - Estar al pendiente de las actualizaciones de front y back para entender la manera en la que se trabaja.
 
 Josue Jose Jurado Cano - Front:
 Commit 1:
@@ -18,8 +18,8 @@ Commit 3:
 
 Mariana Ruiz Gonzalez - Back:
 Commit 1:
-  - Subir archivos a Git Hub
+  - Subir archivos a Git Hub y actualizar mi comic.
 Commit 2:
-  - Implementar reglas, implementar divide y enceras
+  - Implementar reglas, implementar divide y venceras.
 Commit 3:
-  - 
+  - Hacer funcional la parte técnica de la matriz para que pueda trabajar con el front adecuadamente.
