@@ -10,8 +10,9 @@ Commit 3:
 
 Josue Jose Jurado Cano - Front:
 Commit 1:
-  - Implimentar GUI para la matriz
+  - Apoyar con el diagrama para la creacion del laberinto
 Commit 2:
+  - Implimentar GUI para la matriz
   - Implementar botones a GUI
 Commit 3:
   - GUI final del proyecto
