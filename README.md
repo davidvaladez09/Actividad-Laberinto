@@ -13,8 +13,9 @@ Commit 1:
   - Apoyar con el diagrama para la creacion del laberinto
 Commit 2:
   - Implimentar GUI para la matriz
-  - Implementar botones a GUI
 Commit 3:
+  - Implementar botones a GUI
+Commit 4:
   - GUI final del proyecto
 
 Mariana Ruiz Gonzalez - Back:
