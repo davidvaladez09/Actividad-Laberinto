@@ -1,4 +1,5 @@
-https://github.com/davidvaladez09/Actividad-Laberinto
+Link repositorio: https://github.com/davidvaladez09/Actividad-Laberinto
+Link gestion de proyecto: https://docs.google.com/spreadsheets/d/1Mm6bbonRbKB373IgiPIL7T_fgR1b0XiiU4fSCNwBRb8/edit#gid=0
 
 Valadez Gutierrez David - Gestionar proyecto:
 Commit 1:
