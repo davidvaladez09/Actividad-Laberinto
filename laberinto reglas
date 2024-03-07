@@ -5,26 +5,20 @@ import numpy as np
 filas = 6
 columnas = 6
 
-# matriz con 0 para caminos y 1 para paredes
-laberinto = np.zeros((filas, columnas), dtype=int)
+# trivia en 111 (preguntas en el txt) se harán 2
 
-# entrada con 0 como representante
-laberinto[0, 0] = 0
+# que recursivo 3 veces max para que se cierre el programa si se equivoca 3 veces, ya que son 3 oportunidades por ser 3 opciones diferentes
 
-# salida random, aún en discusión si hacemos uno fijo
-salida_fila = np.random.randint(filas)
-salida_columna = np.random.randint(columnas)
-laberinto[salida_fila, salida_columna] = 2
+# que al estar en la respuesta correcta, se abra el camino de la casilla
 
-# celdas de teletransporte (cambiar cuando hable con mis compañeros)
-teletransporte1 = (1, 1)
-teletransporte2 = (4, 4)
-teletransporte3 = (2, 3)
+# evitar que el laberinto se cierre con la pared del 1 completamente (sin dejar otro camino al que ir) o que se coloque una casilla de teletransportación en la final del camino cerrado
 
-# las celdas de teletransporte son 7 (como de la suerte)
-# lo podemos cambiar cuando nos pongamos bien de acuerdo
-laberinto[teletransporte1] = 7
-laberinto[teletransporte2] = 7
-laberinto[teletransporte3] = 7
+# que se coloque la casilla de trivia en cualquier lugar accesible random por el que se pueda pasar
 
-print(laberinto)
+# programación dinamica para la presentación final que será otra versión del código (?
+
+# que al buscar se marque con el numero que está en el codigo que corre la matriz (creo que es 3?)
+
+# 3 lleva a 4 y 4 a 3
+laberinto[teletransporte1] = 3
+laberinto[teletransporte2] = 4
