@@ -1,0 +1,30 @@
+# los comentarios son notas personales para que no se me olvide (ya después cambio a los oficiales)
+
+import numpy as np
+
+filas = 6
+columnas = 6
+
+# matriz con 0 para caminos y 1 para paredes
+laberinto = np.zeros((filas, columnas), dtype=int)
+
+# entrada con 0 como representante
+laberinto[0, 0] = 0
+
+# salida random, aún en discusión si hacemos uno fijo
+salida_fila = np.random.randint(filas)
+salida_columna = np.random.randint(columnas)
+laberinto[salida_fila, salida_columna] = 2
+
+# celdas de teletransporte (cambiar cuando hable con mis compañeros)
+teletransporte1 = (1, 1)
+teletransporte2 = (4, 4)
+teletransporte3 = (2, 3)
+
+# las celdas de teletransporte son 7 (como de la suerte)
+# lo podemos cambiar cuando nos pongamos bien de acuerdo
+laberinto[teletransporte1] = 7
+laberinto[teletransporte2] = 7
+laberinto[teletransporte3] = 7
+
+print(laberinto)
