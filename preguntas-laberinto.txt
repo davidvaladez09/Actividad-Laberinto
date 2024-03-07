@@ -1,0 +1,26 @@
+Preguntas de Trivia:
+
+- Si se equivoca, se da chance de intentar de nuevo hasta que el usuario selecciona la opción correcta.
+- La trivia se activa en la casilla 111 del laberinto.
+- Agrega elementos excéntricos al laberinto, como celdas que solo pueden atravesarse en ciertas condiciones o celdas que requieren resolver acertijos para pasar. (crear la celda 111, que si llegan ahi debe hacer una pregunta trivia y no se abre hasta que no se conteste bien)
+- Presenta tu solución en un informe escrito (Reporte siguiendo la guia de reportes)
+
+1. ¿Cúanto es 5 x 5?
+a) 10
+b) 55
+c) 25 (correcta)
+
+2. ¿Cuál es el nombre del profesor de la clase?
+a) Jorge Ernesto (correcta)
+b) Luis Ernesto
+c) Jorge Alberto
+
+3. ¿Para cuál clase fue esta actividad?
+a) Analisis de los laberintos
+b) Divide y estudiarás
+c) Analisis de Algoritmos (correcta)
+
+4. ¿Cuántos integrantes del equipo hay?
+a) 3 (correcta)
+b) 4
+c) 5
