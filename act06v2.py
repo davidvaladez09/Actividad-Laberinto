@@ -1,4 +1,3 @@
-#Realizado por David Valadez Gutierrez
 import numpy as np
 import tkinter as tk
 
@@ -98,18 +97,41 @@ def encontrar_camino_recursivo(fila, columna):
 
 # Crear ventana
 ventana = tk.Tk()
-ventana.title("Laberinto")
+ventana.title("Act06")
+ventana.geometry("500x500")
 
 # Crear botón para generar una nueva matriz y buscar el resultado
-boton_generar = tk.Button(ventana, text="Generar y Buscar", command=lambda: [generar_nueva_matriz(), encontrar_camino()])
-boton_generar.grid(row=0, column=0, padx=5, pady=5)
+boton_generar = tk.Button(ventana, text="Generar", command=lambda: [generar_nueva_matriz()])
+boton_generar.grid(row=3, column=6, padx=5, pady=5)
+boton_generar = tk.Button(ventana, text="Buscar", command=lambda: [encontrar_camino()])
+boton_generar.grid(row=4, column=6, padx=5, pady=5)
 
-# Crear etiquetas para mostrar la matriz
-etiquetas = [[tk.Label(ventana, text=str(matriz[fila][columna])) for columna in range(columnas)] for fila in range(filas)]
+# Generar el titulo del programa
+titulo_label = tk.Label(ventana, text="Laberinto", font=("Arial", 16))
+titulo_label.grid(row=0, column=0, columnspan=columnas, padx=5, pady=5, sticky="ew")  # Utilizar columnspan para abarcar todas las columnas y sticky para centrar horizontalmente
 
-# Colocar las etiquetas en la ventana
+# Crear etiquetas para mostrar la matriz con color de fondo y contorno
+etiquetas = [
+    [
+        tk.Label(
+            ventana, 
+            text=str(matriz[fila][columna]), 
+            bg="#add8e6", 
+            width=3, 
+            height=2, 
+            borderwidth=15,  # Ajusta este valor según el grosor de cada recuadro de la matriz
+            relief="flat",  # Tipo de relieve del borde
+            highlightthickness=1,  # Grosor del contorno
+            highlightbackground="#ED804A"  # Color del contorno
+        ) 
+        for columna in range(columnas)
+    ] 
+    for fila in range(filas)
+]
+
+# Colocar las etiquetas en la ventana, comenzando desde la fila siguiente al título
 for fila in range(filas):
     for columna in range(columnas):
-        etiquetas[fila][columna].grid(row=fila+1, column=columna, padx=5, pady=5)
+        etiquetas[fila][columna].grid(row=fila+1, column=columna, padx=0, pady=0)
 
 ventana.mainloop()
