@@ -1,3 +1,4 @@
+#Realizado por David Valadez Gutierrez
 import numpy as np
 import tkinter as tk
 
