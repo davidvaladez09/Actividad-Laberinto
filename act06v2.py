@@ -5,46 +5,33 @@ import tkinter as tk
 filas = 6
 columnas = 6
 
-# Crear matriz de ceros y unos aleatorios
-matriz = np.random.randint(2, size=(filas, columnas))
-
-# Asegurarse de que la posición (0,0) es un 0
-matriz[0, 0] = 0
-
-# Elegir una posición aleatoria para colocar el número 2
-fila_aleatoria = np.random.randint(filas)
-columna_aleatoria = np.random.randint(columnas)
-
-# Asegurarse de que la posición aleatoria no esté ocupada por un 1
-while matriz[fila_aleatoria, columna_aleatoria] == 1:
-    fila_aleatoria = np.random.randint(filas)
-    columna_aleatoria = np.random.randint(columnas)
-
-# Colocar el número 2 en la posición aleatoria
-matriz[fila_aleatoria, columna_aleatoria] = 2
-
-# Inicializar la variable de etiquetas
-etiquetas = []
+# Inicializar la matriz como una variable global
+matriz = np.zeros((filas, columnas))
+pos_3 = (0, 0) # Estas se ponen en 0,0 con la única intención de que estén disponibles para que
+pos_4 = (0, 0) # la función de la generación de matriz la coloque aleatoriamente después
 
 def generar_nueva_matriz():
-    global matriz, etiquetas
+    global matriz, pos_3, pos_4  # Hacer matrices globales para poder modificarlas dentro de la función
     # Generar una nueva matriz aleatoria
     matriz = np.random.randint(2, size=(filas, columnas))
     # Asegurarse de que la posición (0,0) es un 0
     matriz[0, 0] = 0
-
-    # Elegir una posición aleatoria para colocar el número 2
-    fila_aleatoria = np.random.randint(filas)
-    columna_aleatoria = np.random.randint(columnas)
-
-    # Asegurarse de que la posición aleatoria no esté ocupada por un 1
-    while matriz[fila_aleatoria, columna_aleatoria] == 1:
-        fila_aleatoria = np.random.randint(filas)
-        columna_aleatoria = np.random.randint(columnas)
-
-    # Colocar el número 2 en la posición aleatoria
-    matriz[fila_aleatoria, columna_aleatoria] = 2
-
+    # Colocar el número 2 en la posición (0,0)
+    matriz[0, 0] = 2
+    
+    # Elegir posiciones aleatorias para colocar los valores 3 y 4
+    pos_3 = (np.random.randint(1, filas), np.random.randint(1, columnas))
+    pos_4 = (np.random.randint(1, filas), np.random.randint(1, columnas))
+    while pos_3 == pos_4:  # Asegurarse de que las posiciones de los teletransportadores no sean iguales
+        pos_4 = (np.random.randint(1, filas), np.random.randint(1, columnas))
+    # Asegurarse de que las posiciones aleatorias no estén ocupadas por un 1
+    while matriz[pos_3] == 1 or matriz[pos_4] == 1:
+        pos_3 = (np.random.randint(1, filas), np.random.randint(1, columnas))
+        pos_4 = (np.random.randint(1, filas), np.random.randint(1, columnas))
+    
+    # Colocar los valores 3 y 4 en las posiciones aleatorias
+    matriz[pos_3] = 3
+    matriz[pos_4] = 4
     # Borrar la matriz anterior de la ventana y mostrar la nueva matriz
     for fila in range(filas):
         for columna in range(columnas):
@@ -78,6 +65,12 @@ def encontrar_camino_recursivo(fila, columna):
     # Si la posición actual es la salida, retornamos True
     if matriz[fila][columna] == 2:
         return True
+
+    # Si la posición actual es un teletransportador, cambiamos la posición actual
+    elif matriz[fila][columna] == 3:
+        fila, columna = pos_4
+    elif matriz[fila][columna] == 4:
+        fila, columna = pos_3
 
     # Lista de posibles movimientos: arriba, abajo, izquierda, derecha
     movimientos = [(fila - 1, columna), (fila + 1, columna), (fila, columna - 1), (fila, columna + 1)]
