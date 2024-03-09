@@ -1,5 +1,6 @@
 import numpy as np
 import tkinter as tk
+import random
 
 # Dimensiones de la matriz
 filas = 6
@@ -16,14 +17,27 @@ def generar_nueva_matriz():
     matriz = np.random.randint(2, size=(filas, columnas))
     # Asegurarse de que la posición (0,0) es un 0
     matriz[0, 0] = 0
-    # Colocar el número 2 en la posición (0,0)
-    matriz[0, 0] = 2
+
+    # Fracmento para que el dos no se coloque en la posicion 0,0 
+    fila_random = random.randint(0, 5)
+    columna_random = random.randint(0, 5)
+
+    if fila_random == 0 and columna_random == 0:
+        if fila_random == 5:
+            fila -= 1
+        else: 
+            fila += 1
+        
+    # Colocar el número 2 en cualquier posicion
+    matriz[fila_random, columna_random] = 2
     
     # Elegir posiciones aleatorias para colocar los valores 3 y 4
     pos_3 = (np.random.randint(1, filas), np.random.randint(1, columnas))
     pos_4 = (np.random.randint(1, filas), np.random.randint(1, columnas))
+
     while pos_3 == pos_4:  # Asegurarse de que las posiciones de los teletransportadores no sean iguales
         pos_4 = (np.random.randint(1, filas), np.random.randint(1, columnas))
+    
     # Asegurarse de que las posiciones aleatorias no estén ocupadas por un 1
     while matriz[pos_3] == 1 or matriz[pos_4] == 1:
         pos_3 = (np.random.randint(1, filas), np.random.randint(1, columnas))
