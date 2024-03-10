@@ -1,6 +1,8 @@
 import numpy as np
 import tkinter as tk
 import random
+import time
+import matplotlib.pyplot as plt
 
 # Dimensiones de la matriz
 filas = 6
@@ -10,6 +12,8 @@ columnas = 6
 matriz = np.zeros((filas, columnas))
 pos_3 = (0, 0) # Estas se ponen en 0,0 con la única intención de que estén disponibles para que
 pos_4 = (0, 0) # la función de la generación de matriz la coloque aleatoriamente después
+
+tiempos = [] # Lista para insertar todos los tiempos para encontra la solucion
 
 def generar_nueva_matriz():
     global matriz, pos_3, pos_4  # Hacer matrices globales para poder modificarlas dentro de la función
@@ -52,6 +56,8 @@ def generar_nueva_matriz():
             etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
 
 def encontrar_camino():
+    tiempo_inicio = time.time() # Tiempo de incio
+
     # Reiniciar la matriz de visitados
     global visitado
     visitado = [[False] * columnas for _ in range(filas)]
@@ -71,6 +77,12 @@ def encontrar_camino():
     for fila in range(filas):
         for columna in range(columnas):
             etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
+    
+    tiempo_fin = time.time() #Tiempo de finalizacion
+
+    tiempo_total = tiempo_fin - tiempo_inicio # Tiempo total
+    tiempos.append(tiempo_total) # Inserta los tiempos totales a la lista 
+    mostrar_grafica() # Muestra la grafica de los tiempos
 
 def encontrar_camino_recursivo(fila, columna):
     # Marcamos la casilla actual como visitada
@@ -91,6 +103,7 @@ def encontrar_camino_recursivo(fila, columna):
 
     # Explorar cada movimiento posible
     for nueva_fila, nueva_columna in movimientos:
+        time.sleep(.001)
         # Verificar si la nueva posición está dentro de los límites de la matriz
         if 0 <= nueva_fila < filas and 0 <= nueva_columna < columnas:
             # Verificar si la nueva posición no ha sido visitada y es un camino válido
@@ -101,6 +114,16 @@ def encontrar_camino_recursivo(fila, columna):
 
     # Si no se encuentra ningún camino válido desde esta posición, retroceder
     return False
+
+# Funcion que muestra la grafica de los tiempos
+def mostrar_grafica():
+    plt.figure(figsize=(8,5))
+    plt.plot(range(1, len(tiempos) + 1), tiempos, marker='o', color='b')
+    plt.title('TIEMPOS DE EJECUCION')
+    plt.xlabel('Intento')
+    plt.ylabel('Tiempo (s)')
+    plt.grid(True)
+    plt.show()
 
 # Crear ventana
 ventana = tk.Tk()
