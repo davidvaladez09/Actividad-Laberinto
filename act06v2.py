@@ -115,6 +115,7 @@ def trivia(respuesta_correcta):
     def comprobar_respuesta(respuesta_seleccionada):
         if respuesta_seleccionada == "a) Jorge Ernesto (correcta)":
             messagebox.showinfo("¡Correcto!", "¡Respuesta correcta!")
+            ventana_trivia.destroy()
             encontrar_camino(True)
         else:
             messagebox.showerror("¡Incorrecto!", "¡Respuesta incorrecta!")
@@ -190,10 +191,15 @@ def generar_ventana_principal():
     ventana.geometry("500x500")
 
     # Crear botón para generar una nueva matriz y buscar el resultado
-    boton_generar = tk.Button(ventana, text="Generar", command=lambda: [generar_nueva_matriz()])
+    boton_generar = tk.Button(ventana, text="Generar", command=lambda: [generar_nueva_matriz(), habilitar_trivia()])
     boton_generar.grid(row=3, column=6, padx=5, pady=5)
     boton_generar = tk.Button(ventana, text="Buscar", command=lambda: [encontrar_camino(False)])
     boton_generar.grid(row=4, column=6, padx=5, pady=5)
+
+    # Crear boton para generar el boton de la trivia
+    boton_trivia = tk.Button(ventana, text= "Trivia",command=lambda: [trivia(False)])
+    boton_trivia.grid(row=5, column=6, padx=5, pady=5)
+    boton_trivia.config(state=tk.DISABLED)
 
     # Generar el titulo del programa
     titulo_label = tk.Label(ventana, text="Laberinto", font=("Arial", 16))
@@ -223,6 +229,8 @@ def generar_ventana_principal():
     for fila in range(filas):
         for columna in range(columnas):
             etiquetas[fila][columna].grid(row=fila+1, column=columna, padx=0, pady=0)
+    def habilitar_trivia():
+        boton_trivia.config(state=tk.NORMAL)
 
     ventana.mainloop()
 
