@@ -2,10 +2,13 @@ Link repositorio: https://github.com/davidvaladez09/Actividad-Laberinto
 Link gestion de proyecto: https://docs.google.com/spreadsheets/d/1Mm6bbonRbKB373IgiPIL7T_fgR1b0XiiU4fSCNwBRb8/edit#gid=0
 
 Valadez Gutierrez David - Gestionar proyecto:
+
 Commit 1:
   - Implementar una matriz con los valores definidos
+
 Commit 2:
   - Subir archivo de gestion de proyecto
+
 Commit 3:
   - Estar al pendiente de las actualizaciones de front y back para entender la manera en la que se trabaja.
 
