@@ -83,15 +83,21 @@ def encontrar_camino(respuesta_correcta):
     tiempo_inicio = time.time() # Tiempo de incio
 
     # Buscar el camino desde la posición (0, 0)
+     # Buscar el camino desde la posición (0, 0)
     if encontrar_camino_recursivo(0, 0):
-        print("Se encontró un camino hacia la salida.")
+        mensaje = "Se encontró un camino hacia la salida."
         # Remplazar los valores del camino encontrado por el número 7, excepto la salida
         for fila in range(filas):
             for columna in range(columnas):
                 if visitado[fila][columna] and matriz[fila][columna] != 2:
                     matriz[fila][columna] = 7
     else:
-        print("No se encontró un camino hacia la salida.")
+        mensaje = "No se encontró un camino hacia la salida."
+
+    # Actualizar la ventana con la matriz modificada
+    for fila in range(filas):
+        for columna in range(columnas):
+            etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
 
     # Actualizar la ventana con la matriz modificada
     for fila in range(filas):
@@ -103,6 +109,10 @@ def encontrar_camino(respuesta_correcta):
     tiempo_total = tiempo_fin - tiempo_inicio # Tiempo total
     tiempos.append(tiempo_total) # Inserta los tiempos totales a la lista 
     mostrar_grafica() # Muestra la grafica de los tiempos
+
+    # Generar mensaje si se encontró o no el camino
+    mensaje_label = tk.Label(ventana, text=mensaje, font=("Arial", 12), fg="Black")
+    mensaje_label.grid(row=8, column=0, columnspan=columnas, padx=5, pady=5, sticky="ew")
 
 def trivia(respuesta_correcta):
     global intentos
