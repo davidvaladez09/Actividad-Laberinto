@@ -72,7 +72,10 @@ def generar_nueva_matriz():
     # Borrar la matriz anterior de la ventana y mostrar la nueva matriz
     for fila in range(filas):
         for columna in range(columnas):
-            etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
+            if matriz[fila][columna] == 1:
+                etiquetas[fila][columna].config(text="")  # Ocultar texto para las celdas con "1"
+            else:
+                etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
 
 def encontrar_camino(respuesta_correcta):
     global intentos
@@ -97,12 +100,10 @@ def encontrar_camino(respuesta_correcta):
     # Actualizar la ventana con la matriz modificada
     for fila in range(filas):
         for columna in range(columnas):
-            etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
-
-    # Actualizar la ventana con la matriz modificada
-    for fila in range(filas):
-        for columna in range(columnas):
-            etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
+            if matriz[fila][columna] == 1:
+                etiquetas[fila][columna].config(text="")  # Ocultar texto para las celdas con "1"
+            else:
+                etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
     
     tiempo_fin = time.time() #Tiempo de finalizacion
 
@@ -111,7 +112,7 @@ def encontrar_camino(respuesta_correcta):
     mostrar_grafica() # Muestra la grafica de los tiempos
 
     # Generar mensaje si se encontró o no el camino
-    mensaje_label = tk.Label(ventana, text=mensaje, font=("Arial", 12), fg="Black")
+    mensaje_label = tk.Label(ventana, text=mensaje, font=("Arial", 12), fg="black")
     mensaje_label.grid(row=8, column=0, columnspan=columnas, padx=5, pady=5, sticky="ew")
 
 def trivia(respuesta_correcta):
