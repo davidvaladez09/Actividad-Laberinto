@@ -23,6 +23,24 @@ tiempos = []  # Lista para insertar todos los tiempos para encontrar la solucion
 intentos = 0
 max_intentos = 3
 
+def restaurar_colores():
+    # Restaurar los colores de las casillas especiales
+    for fila in range(filas):
+        for columna in range(columnas):
+            if matriz[fila][columna] == 2:
+                etiquetas[fila][columna].config(text="", bg="#FF4646")  # Ocultar texto y cambiar color para las celdas con "2"
+            elif matriz[fila][columna] == 1:
+                etiquetas[fila][columna].config(text="", bg="#59545D")  # Ocultar texto y cambiar color para las celdas con "1"
+            elif matriz[fila][columna] == 3:
+                etiquetas[fila][columna].config(bg="#53B9F7")  # Restaurar color de fondo para las celdas con "3"
+            elif matriz[fila][columna] == 4:
+                etiquetas[fila][columna].config(text="", bg="#2374FA")  # Ocultar texto y cambiar color para las celdas con "4"
+            elif matriz[fila][columna] == 111:
+                etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "11"
+            else:
+                etiquetas[fila][columna].config(bg="#add8e6", text=str(matriz[fila][columna]))  # Restaurar color de fondo y texto para las demás celdas
+
+
 def generar_nueva_matriz():
     global matriz, pos_3, pos_4, pos_111, visitado  # Hacer matrices globales para poder modificarlas dentro de la función
     # Generar una nueva matriz aleatoria
@@ -73,9 +91,19 @@ def generar_nueva_matriz():
     for fila in range(filas):
         for columna in range(columnas):
             if matriz[fila][columna] == 1:
-                etiquetas[fila][columna].config(text="")  # Ocultar texto para las celdas con "1"
+                etiquetas[fila][columna].config(text="", bg="#59545D")  # Ocultar texto y cambiar color para las celdas con "1"
+            elif matriz[fila][columna] == 2:
+                etiquetas[fila][columna].config(text="", bg="#FF4646")  # Ocultar texto y cambiar color para las celdas con "2"
+            elif matriz[fila][columna] == 3:
+                etiquetas[fila][columna].config(text="", bg="#53B9F7")  # Ocultar texto y cambiar color para las celdas con "3"
+            elif matriz[fila][columna] == 4:
+                etiquetas[fila][columna].config(text="", bg="#2374FA")  # Ocultar texto y cambiar color para las celdas con "4"
+            elif matriz[fila][columna] == 111:
+                etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "111"
             else:
-                etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
+                etiquetas[fila][columna].config(text="")
+
+    restaurar_colores()
 
 def encontrar_camino(respuesta_correcta):
     global intentos
@@ -101,7 +129,15 @@ def encontrar_camino(respuesta_correcta):
     for fila in range(filas):
         for columna in range(columnas):
             if matriz[fila][columna] == 1:
-                etiquetas[fila][columna].config(text="")  # Ocultar texto para las celdas con "1"
+                etiquetas[fila][columna].config(text="", bg="#59545D")  # Ocultar texto y cambiar color para las celdas con "1"
+            elif matriz[fila][columna] == 2:
+                etiquetas[fila][columna].config(text="", bg="#FF4646")  # Ocultar texto y cambiar color para las celdas con "2"
+            elif matriz[fila][columna] == 3:
+                etiquetas[fila][columna].config(text="", bg="#53B9F7")  # Ocultar texto y cambiar color para las celdas con "3"
+            elif matriz[fila][columna] == 4:
+                etiquetas[fila][columna].config(text="", bg="#2374FA")  # Ocultar texto y cambiar color para las celdas con "4"
+            elif matriz[fila][columna] == 111:
+                etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "111"
             else:
                 etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
     
@@ -229,7 +265,7 @@ def generar_ventana_principal():
                 borderwidth=15,  # Ajusta este valor según el grosor de cada recuadro de la matriz
                 relief="flat",  # Tipo de relieve del borde
                 highlightthickness=1,  # Grosor del contorno
-                highlightbackground="#ED804A"  # Color del contorno
+                highlightbackground="#59545D"  # Color del contorno
             ) 
             for columna in range(columnas)
         ] 
