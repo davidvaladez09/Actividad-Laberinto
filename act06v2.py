@@ -36,7 +36,7 @@ def restaurar_colores():
             elif matriz[fila][columna] == 4:
                 etiquetas[fila][columna].config(text="", bg="#2374FA")  # Ocultar texto y cambiar color para las celdas con "4"
             elif matriz[fila][columna] == 111:
-                etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "11"
+                etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "111"
             else:
                 etiquetas[fila][columna].config(bg="#add8e6", text=str(matriz[fila][columna]))  # Restaurar color de fondo y texto para las demás celdas
 
@@ -105,17 +105,51 @@ def generar_nueva_matriz():
 
     restaurar_colores()
 
+def eliminar_pared_obstaculo():
+    global matriz, etiquetas
+    # Encontrar una casilla de pared para eliminar
+    fila_pared, columna_pared = -1, -1
+    for fila in range(filas):
+        for columna in range(columnas):
+            if matriz[fila][columna] == 1:
+                fila_pared, columna_pared = fila, columna
+                break
+        if fila_pared != -1:
+            break
+    
+    if fila_pared != -1:
+        # Marcar la casilla de la pared como libre en la matriz
+        matriz[fila_pared][columna_pared] = 0  # Cambia el valor de la pared a libre en la matriz
+        # Marcar la casilla de la pared como blanca en la interfaz gráfica
+        etiquetas[fila_pared][columna_pared].config(bg="#FFFFFF")
+        print("Se eliminó una pared en la posición:", (fila_pared, columna_pared))
+        
+        # Buscar camino nuevamente y marcarlo con "7"
+        for fila in range(filas):
+            for columna in range(columnas):
+                visitado[fila][columna] = False  # Restaurar matriz de visitados antes de buscar camino
+        if encontrar_camino_recursivo(0, 0, False):  # Encuentra el nuevo camino
+            for fila in range(filas):
+                for columna in range(columnas):
+                    if visitado[fila][columna] and matriz[fila][columna] != 2:
+                        matriz[fila][columna] = 7  # Marcar el camino con "7"
+        return True
+    else:
+        print("No se encontraron paredes para eliminar.")
+        return False
+
 def encontrar_camino(respuesta_correcta):
     global intentos
-    if not respuesta_correcta:
+    if not respuesta_correcta and intentos > 0:  
         messagebox.showwarning("¡Atención!", "Debes responder correctamente la trivia para continuar.")
         return
     
-    tiempo_inicio = time.time() # Tiempo de incio
+    tiempo_inicio = time.time() 
+
+    encontrada_casilla_111 = False  
 
     # Buscar el camino desde la posición (0, 0)
-     # Buscar el camino desde la posición (0, 0)
-    if encontrar_camino_recursivo(0, 0):
+    if encontrar_camino_recursivo(0, 0, encontrada_casilla_111):
         mensaje = "Se encontró un camino hacia la salida."
         # Remplazar los valores del camino encontrado por el número 7, excepto la salida
         for fila in range(filas):
@@ -123,29 +157,42 @@ def encontrar_camino(respuesta_correcta):
                 if visitado[fila][columna] and matriz[fila][columna] != 2:
                     matriz[fila][columna] = 7
     else:
-        mensaje = "No se encontró un camino hacia la salida."
+        mensaje = "No se encontró un camino hacia la salida. Intentando eliminar una pared."
+
+        # Intentar eliminar una pared obstáculo
+        if eliminar_pared_obstaculo():
+            # Volver a buscar el camino
+            if encontrar_camino_recursivo(0, 0, encontrada_casilla_111):
+                mensaje = "Se encontró un camino hacia la salida después de eliminar una pared."
+            else:
+                mensaje = "No se encontró un camino hacia la salida después de intentar eliminar una pared."
+        else:
+            mensaje = "No se encontró una pared para eliminar."
+
+    # Mostrar la trivia si se encontró la casilla 111 durante la búsqueda del camino
+    if encontrada_casilla_111:
+        trivia(True)  # Mostrar trivia
 
     # Actualizar la ventana con la matriz modificada
     for fila in range(filas):
         for columna in range(columnas):
             if matriz[fila][columna] == 1:
-                etiquetas[fila][columna].config(text="", bg="#59545D")  # Ocultar texto y cambiar color para las celdas con "1"
+                etiquetas[fila][columna].config(text="", bg="#59545D")  
             elif matriz[fila][columna] == 2:
-                etiquetas[fila][columna].config(text="", bg="#FF4646")  # Ocultar texto y cambiar color para las celdas con "2"
+                etiquetas[fila][columna].config(text="", bg="#FF4646")  
             elif matriz[fila][columna] == 3:
-                etiquetas[fila][columna].config(text="", bg="#53B9F7")  # Ocultar texto y cambiar color para las celdas con "3"
+                etiquetas[fila][columna].config(text="", bg="#53B9F7")  
             elif matriz[fila][columna] == 4:
-                etiquetas[fila][columna].config(text="", bg="#2374FA")  # Ocultar texto y cambiar color para las celdas con "4"
+                etiquetas[fila][columna].config(text="", bg="#2374FA")  
             elif matriz[fila][columna] == 111:
-                etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "111"
+                etiquetas[fila][columna].config(text="", bg="#23FA3D")  
             else:
                 etiquetas[fila][columna].config(text=str(matriz[fila][columna]))
     
-    tiempo_fin = time.time() #Tiempo de finalizacion
-
-    tiempo_total = tiempo_fin - tiempo_inicio # Tiempo total
-    tiempos.append(tiempo_total) # Inserta los tiempos totales a la lista 
-    mostrar_grafica() # Muestra la grafica de los tiempos
+    tiempo_fin = time.time() 
+    tiempo_total = tiempo_fin - tiempo_inicio 
+    tiempos.append(tiempo_total) 
+    mostrar_grafica() 
 
     # Generar mensaje si se encontró o no el camino
     mensaje_label = tk.Label(ventana, text=mensaje, font=("Arial", 12), fg="black")
@@ -160,13 +207,17 @@ def trivia(respuesta_correcta):
 
     # Función para comprobar la respuesta seleccionada
     def comprobar_respuesta(respuesta_seleccionada):
+        global intentos  # No necesitas 'nonlocal' aquí
         if respuesta_seleccionada == "a) Jorge Ernesto (correcta)":
             messagebox.showinfo("¡Correcto!", "¡Respuesta correcta!")
             ventana_trivia.destroy()
+            # Llamar a encontrar_camino con respuesta_correcta=True para continuar la búsqueda del camino
             encontrar_camino(True)
         else:
-            messagebox.showerror("¡Incorrecto!", "¡Respuesta incorrecta!")
-            if intentos >= max_intentos:
+            if intentos < max_intentos:
+                messagebox.showerror("¡Incorrecto!", "¡Respuesta incorrecta! Inténtalo de nuevo.")
+                intentos += 1
+            else:
                 messagebox.showinfo("¡Fin del juego!", "¡Has agotado tus intentos! El juego se cerrará.")
                 ventana.destroy()
 
@@ -183,8 +234,8 @@ def trivia(respuesta_correcta):
     for opcion in opciones:
         boton_opcion = tk.Button(ventana_trivia, text=opcion, command=lambda resp=opcion: comprobar_respuesta(resp))
         boton_opcion.pack()
-
-def encontrar_camino_recursivo(fila, columna):
+        
+def encontrar_camino_recursivo(fila, columna, encontrada_casilla_111):
     global visitado  # Hacer la variable visitado global
 
     # Marcamos la casilla actual como visitada
@@ -215,11 +266,12 @@ def encontrar_camino_recursivo(fila, columna):
             # Verificar si la nueva posición no ha sido visitada y es un camino válido
             if not visitado[nueva_fila][nueva_columna] and matriz[nueva_fila][nueva_columna] != 1:
                 # Llamar recursivamente a la función para explorar desde la nueva posición
-                if encontrar_camino_recursivo(nueva_fila, nueva_columna):
+                if encontrar_camino_recursivo(nueva_fila, nueva_columna, encontrada_casilla_111):
                     return True
 
     # Si no se encuentra ningún camino válido desde esta posición, retroceder
     return False
+
 
 def mostrar_grafica():
     plt.figure(figsize=(8,5))
