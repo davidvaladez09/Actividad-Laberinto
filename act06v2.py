@@ -23,6 +23,9 @@ tiempos = []  # Lista para insertar todos los tiempos para encontrar la solucion
 intentos = 0
 max_intentos = 3
 
+# Definicion de la matriz para aplicar programacion dinamica
+dp = np.full((filas, columnas), None)
+
 def restaurar_colores():
     # Restaurar los colores de las casillas especiales
     for fila in range(filas):
@@ -258,6 +261,11 @@ def encontrar_camino_recursivo(fila, columna, encontrada_casilla_111):
     # Lista de posibles movimientos: arriba, abajo, izquierda, derecha
     movimientos = [(fila - 1, columna), (fila + 1, columna), (fila, columna - 1), (fila, columna + 1)]
 
+    # IMPLEMENTACION PROGRAMACION DINAMICA 
+    # Si ya se calculo el resultado de esta posicion se devuelve
+    if dp[fila][columna] is not None:
+        return dp[fila][columna]
+
     # Explorar cada movimiento posible
     for nueva_fila, nueva_columna in movimientos:
         time.sleep(.001)
@@ -267,9 +275,12 @@ def encontrar_camino_recursivo(fila, columna, encontrada_casilla_111):
             if not visitado[nueva_fila][nueva_columna] and matriz[nueva_fila][nueva_columna] != 1:
                 # Llamar recursivamente a la función para explorar desde la nueva posición
                 if encontrar_camino_recursivo(nueva_fila, nueva_columna, encontrada_casilla_111):
+                    # Se guarda el resultado en la matriz para guardar en memoria
+                    dp[fila][columna] = True
                     return True
 
     # Si no se encuentra ningún camino válido desde esta posición, retroceder
+    dp[fila][columna] = False
     return False
 
 
