@@ -256,12 +256,12 @@ def trivia(respuesta_correcta):
     intentos += 1
     # Pregunta y opciones
     pregunta = "¿Cuál es el nombre del profesor de la clase?"
-    opciones = ["a) Jorge Ernesto (correcta)", "b) Luis Ernesto", "c) Jorge Alberto"]
+    opciones = ["a) Jorge Ernesto", "b) Luis Ernesto", "c) Jorge Alberto"]
 
     # Función para comprobar la respuesta seleccionada
     def comprobar_respuesta(respuesta_seleccionada):
         global intentos  # No necesitas 'nonlocal' aquí
-        if respuesta_seleccionada == "a) Jorge Ernesto (correcta)":
+        if respuesta_seleccionada == "a) Jorge Ernesto":
             messagebox.showinfo("¡Correcto!", "¡Respuesta correcta!")
             ventana_trivia.destroy()
             # Llamar a encontrar_camino con respuesta_correcta=True para continuar la búsqueda del camino
