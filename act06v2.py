@@ -298,7 +298,7 @@ def generar_ventana_principal():
     global ventana
     ventana = tk.Tk()
     ventana.title("Act06")
-    ventana.geometry("500x500")
+    ventana.geometry("700x700")
 
     # Crear botón para generar una nueva matriz y buscar el resultado
     boton_generar = tk.Button(ventana, text="Generar", command=lambda: [generar_nueva_matriz(), habilitar_trivia()])
