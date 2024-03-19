@@ -6,8 +6,8 @@ import time
 import matplotlib.pyplot as plt
 
 # Dimensiones de la matriz
-filas = 6
-columnas = 6
+filas = 8
+columnas = 8
 
 # Inicializar la matriz como una variable global
 matriz = np.zeros((filas, columnas))
@@ -26,18 +26,27 @@ max_intentos = 3
 # Definicion de la matriz para aplicar programacion dinamica
 dp = np.full((filas, columnas), None)
 
+boton_generar = None
+boton_buscar = None
+boton_trivia = None
+
 def restaurar_colores():
+    global matriz, etiquetas, filas, columnas  # Declaramos las variables globales
     # Restaurar los colores de las casillas especiales
     for fila in range(filas):
         for columna in range(columnas):
-            if matriz[fila][columna] == 2:
-                etiquetas[fila][columna].config(text="", bg="#FF4646")  # Ocultar texto y cambiar color para las celdas con "2"
+            if matriz[fila][columna] == 0:
+                etiquetas[fila][columna].config(text="", bg="#add8e6")
             elif matriz[fila][columna] == 1:
                 etiquetas[fila][columna].config(text="", bg="#59545D")  # Ocultar texto y cambiar color para las celdas con "1"
+            elif matriz[fila][columna] == 2:
+                etiquetas[fila][columna].config(text="", bg="#FF4646")  # Ocultar texto y cambiar color para las celdas con "2"
             elif matriz[fila][columna] == 3:
-                etiquetas[fila][columna].config(bg="#53B9F7")  # Restaurar color de fondo para las celdas con "3"
+                etiquetas[fila][columna].config(text="", bg="#53B9F7")   # Ocultar texto y cambiar color para las celdas con "3"
             elif matriz[fila][columna] == 4:
                 etiquetas[fila][columna].config(text="", bg="#2374FA")  # Ocultar texto y cambiar color para las celdas con "4"
+            elif matriz[fila][columna] == 7:
+                etiquetas[fila][columna].config(text="", bg="#FFF863")  # Ocultar texto y cambiar color para las celdas con "7"
             elif matriz[fila][columna] == 111:
                 etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "111"
             else:
@@ -45,7 +54,10 @@ def restaurar_colores():
 
 
 def generar_nueva_matriz():
-    global matriz, pos_3, pos_4, pos_111, visitado  # Hacer matrices globales para poder modificarlas dentro de la función
+    global matriz, pos_3, pos_4, pos_111, visitado, etiquetas, intentos  # Hacer matrices globales para poder modificarlas dentro de la función
+    
+    # Restablecer el contador de intentos
+    intentos = 0
     # Generar una nueva matriz aleatoria
     matriz = np.random.randint(2, size=(filas, columnas))
     # Asegurarse de que la posición (0,0) es un 0
@@ -90,10 +102,41 @@ def generar_nueva_matriz():
     # Inicializar la matriz de visitados
     visitado = [[False] * columnas for _ in range(filas)]
 
+    # Eliminar las etiquetas anteriores
+    for fila in range(len(etiquetas)):
+        for etiqueta in etiquetas[fila]:
+            etiqueta.grid_forget()
+
+     # Crear nuevas etiquetas según las nuevas dimensiones de la matriz
+    etiquetas = [
+        [
+            tk.Label(
+                ventana,
+                text=str(matriz[fila][columna]),
+                bg="#add8e6",
+                width=3,
+                height=2,
+                borderwidth=15,
+                relief="flat",
+                highlightthickness=1,
+                highlightbackground="#59545D" 
+            )
+            for columna in range(columnas)
+        ]
+        for fila in range(filas)
+    ]
+
+    # Colocar las nuevas etiquetas en la ventana
+    for fila in range(filas):
+        for columna in range(columnas):
+            etiquetas[fila][columna].grid(row=fila+1, column=columna, padx=0, pady=0)
+   
     # Borrar la matriz anterior de la ventana y mostrar la nueva matriz
     for fila in range(filas):
         for columna in range(columnas):
-            if matriz[fila][columna] == 1:
+            if matriz[fila][columna] == 0:
+                etiquetas[fila][columna].config(text="", bg="#add8e6")  # Ocultar texto y cambiar color para las celdas con "0"
+            elif matriz[fila][columna] == 1:
                 etiquetas[fila][columna].config(text="", bg="#59545D")  # Ocultar texto y cambiar color para las celdas con "1"
             elif matriz[fila][columna] == 2:
                 etiquetas[fila][columna].config(text="", bg="#FF4646")  # Ocultar texto y cambiar color para las celdas con "2"
@@ -101,12 +144,15 @@ def generar_nueva_matriz():
                 etiquetas[fila][columna].config(text="", bg="#53B9F7")  # Ocultar texto y cambiar color para las celdas con "3"
             elif matriz[fila][columna] == 4:
                 etiquetas[fila][columna].config(text="", bg="#2374FA")  # Ocultar texto y cambiar color para las celdas con "4"
+            elif matriz[fila][columna] == 7:
+                etiquetas[fila][columna].config(text="", bg="#FFF863")  # Ocultar texto y cambiar color para las celdas con "7"
             elif matriz[fila][columna] == 111:
                 etiquetas[fila][columna].config(text="", bg="#23FA3D")  # Ocultar texto y cambiar color para las celdas con "111"
             else:
                 etiquetas[fila][columna].config(text="")
 
     restaurar_colores()
+
 
 def eliminar_pared_obstaculo():
     global matriz, etiquetas
@@ -124,7 +170,7 @@ def eliminar_pared_obstaculo():
         # Marcar la casilla de la pared como libre en la matriz
         matriz[fila_pared][columna_pared] = 0  # Cambia el valor de la pared a libre en la matriz
         # Marcar la casilla de la pared como blanca en la interfaz gráfica
-        etiquetas[fila_pared][columna_pared].config(bg="#FFFFFF")
+        etiquetas[fila_pared][columna_pared].config(bg="#2374FA")
         print("Se eliminó una pared en la posición:", (fila_pared, columna_pared))
         
         # Buscar camino nuevamente y marcarlo con "7"
@@ -179,7 +225,9 @@ def encontrar_camino(respuesta_correcta):
     # Actualizar la ventana con la matriz modificada
     for fila in range(filas):
         for columna in range(columnas):
-            if matriz[fila][columna] == 1:
+            if matriz[fila][columna] == 0:
+                etiquetas[fila][columna].config(text="", bg="#add8e6")
+            elif matriz[fila][columna] == 1:
                 etiquetas[fila][columna].config(text="", bg="#59545D")  
             elif matriz[fila][columna] == 2:
                 etiquetas[fila][columna].config(text="", bg="#FF4646")  
@@ -187,6 +235,8 @@ def encontrar_camino(respuesta_correcta):
                 etiquetas[fila][columna].config(text="", bg="#53B9F7")  
             elif matriz[fila][columna] == 4:
                 etiquetas[fila][columna].config(text="", bg="#2374FA")  
+            elif matriz[fila][columna] == 7:
+                etiquetas[fila][columna].config(text="", bg="#FFF863")
             elif matriz[fila][columna] == 111:
                 etiquetas[fila][columna].config(text="", bg="#23FA3D")  
             else:
@@ -206,12 +256,12 @@ def trivia(respuesta_correcta):
     intentos += 1
     # Pregunta y opciones
     pregunta = "¿Cuál es el nombre del profesor de la clase?"
-    opciones = ["a) Jorge Ernesto", "b) Luis Ernesto", "c) Jorge Alberto"]
+    opciones = ["a) Jorge Ernesto (correcta)", "b) Luis Ernesto", "c) Jorge Alberto"]
 
     # Función para comprobar la respuesta seleccionada
     def comprobar_respuesta(respuesta_seleccionada):
         global intentos  # No necesitas 'nonlocal' aquí
-        if respuesta_seleccionada == "a) Jorge Ernesto":
+        if respuesta_seleccionada == "a) Jorge Ernesto (correcta)":
             messagebox.showinfo("¡Correcto!", "¡Respuesta correcta!")
             ventana_trivia.destroy()
             # Llamar a encontrar_camino con respuesta_correcta=True para continuar la búsqueda del camino
@@ -239,7 +289,7 @@ def trivia(respuesta_correcta):
         boton_opcion.pack()
         
 def encontrar_camino_recursivo(fila, columna, encontrada_casilla_111):
-    global visitado  # Hacer la variable visitado global
+    global visitado, filas, columnas, dp  # Hacer la variable visitado global
 
     # Marcamos la casilla actual como visitada
     visitado[fila][columna] = True
@@ -293,28 +343,74 @@ def mostrar_grafica():
     plt.grid(True)
     plt.show()
 
+def obtener_dimensiones():
+    global filas, columnas, boton_generar, boton_buscar, boton_trivia
+
+    try:
+        dimensiones = entry_dimensiones.get()
+        dimensiones = dimensiones.split(',')
+        filas = int(dimensiones[0])
+        columnas = int(dimensiones[1])
+        
+        if filas < 6 or columnas < 6:
+            messagebox.showerror("Error", "Por favor, ingresa valores válidos de nxn y mayor o igual a 6.")
+        elif filas != columnas:
+            messagebox.showerror("Error", "Por favor, ingresa valores válidos de nxn y mayor o igual a 6.")
+        else:
+            messagebox.showinfo("Información", "Dimensiones ingresadas correctamente.")
+            ventana_dimensiones.destroy()  # Cerrar la ventana de ingreso de dimensiones
+            generar_nueva_matriz()  # Generar la nueva matriz con las dimensiones ingresadas
+            # Habilitar los botones de "Buscar" y "Generar" después de confirmar las dimensiones
+            boton_generar.config(state=tk.NORMAL)
+            boton_buscar.config(state=tk.NORMAL)
+            boton_trivia.config(state=tk.NORMAL)  # Habilitar el botón de trivia
+    except (ValueError, IndexError):
+        messagebox.showerror("Error", "Por favor, ingresa valores válidos.")
+
+def ingresar_dimensiones():
+    global ventana_dimensiones, entry_dimensiones
+    # Crear ventana para ingresar dimensiones
+    ventana_dimensiones = tk.Toplevel()
+    ventana_dimensiones.title("Ingresar Dimensiones")
+    
+    # Etiqueta y campo de entrada para dimensiones
+    label_dimensiones = tk.Label(ventana_dimensiones, text="Dimensiones (n,n):")
+    label_dimensiones.grid(row=0, column=0, padx=5, pady=5)
+    entry_dimensiones = tk.Entry(ventana_dimensiones)
+    entry_dimensiones.grid(row=0, column=1, padx=5, pady=5)
+
+    # Botón para confirmar las dimensiones ingresadas
+    boton_confirmar = tk.Button(ventana_dimensiones, text="Confirmar", command=obtener_dimensiones)
+    boton_confirmar.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+
 def generar_ventana_principal():
     # Crear ventana principal
-    global ventana
+    global ventana, boton_buscar, boton_generar, boton_trivia
     ventana = tk.Tk()
     ventana.title("Act06")
     ventana.geometry("700x700")
 
+    # Crear botón para ingresar las dimensiones
+    boton_dimensiones = tk.Button(ventana, text="Ingresar Dimensiones", command=ingresar_dimensiones)
+    boton_dimensiones.grid(row=2, column=columnas+1, padx=5, pady=5)
+
     # Crear botón para generar una nueva matriz y buscar el resultado
-    boton_generar = tk.Button(ventana, text="Generar", command=lambda: [generar_nueva_matriz(), habilitar_trivia()])
-    boton_generar.grid(row=3, column=6, padx=5, pady=5)
-    boton_generar = tk.Button(ventana, text="Buscar", command=lambda: [encontrar_camino(False)])
-    boton_generar.grid(row=4, column=6, padx=5, pady=5)
+    boton_generar = tk.Button(ventana, text="Generar", command=lambda: [generar_nueva_matriz()])
+    boton_generar.grid(row=3, column=columnas+1, padx=5, pady=5)
+    boton_buscar = tk.Button(ventana, text="Buscar", command=lambda: [encontrar_camino(False)])
+    boton_buscar.grid(row=4, column=columnas+1, padx=5, pady=5)
+    # Desactivar los botones de "Buscar" y "Generar" al inicio
+    boton_generar.config(state=tk.DISABLED)
+    boton_buscar.config(state=tk.DISABLED)
 
     # Crear boton para generar el boton de la trivia
     boton_trivia = tk.Button(ventana, text= "Trivia",command=lambda: [trivia(False)])
-    boton_trivia.grid(row=5, column=6, padx=5, pady=5)
+    boton_trivia.grid(row=5, column=columnas+1, padx=5, pady=5)
     boton_trivia.config(state=tk.DISABLED)
 
     # Generar el titulo del programa
     titulo_label = tk.Label(ventana, text="Laberinto", font=("Arial", 16))
-    titulo_label.grid(row=0, column=0, columnspan=columnas, padx=5, pady=5, sticky="ew")  # Utilizar columnspan para abarcar todas las columnas y sticky para centrar horizontalmente
-
+    titulo_label.grid(row=0, column=0, columnspan=columnas, padx=5, pady=5, sticky="ew")# Utilizar columnspan para abarcar todas las columnas y sticky para centrar horizontalmente
     # Crear etiquetas para mostrar la matriz con color de fondo y contorno
     global etiquetas
     etiquetas = [
@@ -339,8 +435,6 @@ def generar_ventana_principal():
     for fila in range(filas):
         for columna in range(columnas):
             etiquetas[fila][columna].grid(row=fila+1, column=columna, padx=0, pady=0)
-    def habilitar_trivia():
-        boton_trivia.config(state=tk.NORMAL)
 
     ventana.mainloop()
 
